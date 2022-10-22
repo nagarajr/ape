@@ -1,1 +1,1 @@
-Add Non-Maximum Suppression (NMS) inplace flag (#8368)
+Adds toggle displaying labels in GUI and verbose log on start (#7804)
