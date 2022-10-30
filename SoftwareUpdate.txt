@@ -1,1 +1,1 @@
-update
+fix for KeyError: 'epoch' (#48)
