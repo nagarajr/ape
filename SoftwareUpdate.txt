@@ -1,1 +1,1 @@
-fix for KeyError: 'epoch' (#48)
+Add quantization support to TensorFlow.js converter (#7008)
