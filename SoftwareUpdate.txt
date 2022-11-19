@@ -1,1 +1,1 @@
-Auto-format by https://ultralytics.com/actions
+Add NCNN Docs Integrations Page (#8562)
