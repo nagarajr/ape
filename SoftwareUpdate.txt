@@ -1,1 +1,1 @@
-Fix OpenVINO links (#7930)
+Fix PNNX ubuntu -> linux bug (#7050)
