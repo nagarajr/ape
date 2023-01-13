@@ -1,1 +1,1 @@
-Both Link Opening Options - Have both the Open in Background option and the Open in New Tab option available alongside each other
+Fix Yolo 8.0.206 scale bug (#7821)
