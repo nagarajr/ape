@@ -1,1 +1,1 @@
-Update HTTP to HTTPS (#7548)
+ultralytics 8.1.32 fix CLIP backwards compatibility (#9253)
