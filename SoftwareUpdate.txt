@@ -1,1 +1,1 @@
-Mkdocs annotations fixes (#7600)
+Add missing single-line docstrings (#8362)
