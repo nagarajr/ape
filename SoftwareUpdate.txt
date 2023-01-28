@@ -1,1 +1,1 @@
-Add missing single-line docstrings (#8362)
+Adds toggle displaying labels in GUI and verbose log on start (#7804)
