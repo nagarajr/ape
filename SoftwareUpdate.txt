@@ -1,1 +1,1 @@
-Adds toggle displaying labels in GUI and verbose log on start (#7804)
+Reverse IoU threshold for NMS docs descriptions (#9151)
