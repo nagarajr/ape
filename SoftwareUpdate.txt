@@ -1,1 +1,1 @@
-Add Ultralytics HUB Cloud Training banner to Docs (#8656)
+Fix IS_PYTHON_3_12 bug (#9258)
