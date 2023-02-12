@@ -1,1 +1,1 @@
-TensorRT FP16 export with dynamic=True (#7870)
+Add https://youtu.be/3VryynorQeo to README and fix converter.py Docs (#7883)
