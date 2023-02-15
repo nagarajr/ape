@@ -1,1 +1,1 @@
-Add plot_images conf_thresh parameter (#8446)
+Add https://youtu.be/96NkhsV-W1U to docs and heatmaps fix (#7944)
