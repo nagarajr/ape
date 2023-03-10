@@ -1,1 +1,1 @@
-Compress explorer image in dataset/index.md + description added for new segmentation datasets (#7901)
+Fix IS_PYTHON_3_12 bug (#9258)
