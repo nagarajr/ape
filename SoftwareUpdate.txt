@@ -1,1 +1,1 @@
-docs: update view-results-in-terminal.md (#66)
+Fix Yolo 8.0.206 scale bug (#7821)
