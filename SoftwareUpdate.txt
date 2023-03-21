@@ -1,1 +1,1 @@
-Auto-format by https://ultralytics.com/actions
+Explorer with LanceDB, Actions and Docs updates (#7487)
