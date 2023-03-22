@@ -1,1 +1,1 @@
-ultralytics 8.1.2 scope HUB-SDK imports (#7596)
+Embed videos in Docs pages using Parent pages for relevant segments (#6877)
