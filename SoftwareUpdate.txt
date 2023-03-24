@@ -1,1 +1,1 @@
-Updated SQL Query Plot Code (#8120)
+RTDETRDetectionModel TorchScript, ONNX Predict and Val support (#8818)
