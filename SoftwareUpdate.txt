@@ -1,1 +1,1 @@
-Add PR Summary step to Ultralytics Actions (#7675)
+ultralytics 8.1.25 fix **kwargs: (dict) warnings (#8815)
