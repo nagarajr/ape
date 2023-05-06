@@ -1,1 +1,1 @@
-Optimize function calls to method calls (#8507)
+Add quantization support to TensorFlow.js converter (#7008)
