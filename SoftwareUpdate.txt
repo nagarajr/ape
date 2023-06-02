@@ -1,1 +1,1 @@
-Add horizontal Mosaic3 augmentation (#6898)
+Resize angle, count, and stage on keypoint number change (#7598)
