@@ -1,1 +1,1 @@
-Improve Coral Edge TPU guide (#8160)
+Clarify triton server boolean value (#8532)
