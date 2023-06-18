@@ -1,1 +1,1 @@
-Tab Manager - An easy way to batch-export, batch-close, and batch-add tabs
+Fix IS_PYTHON_3_12 bug (#9258)
