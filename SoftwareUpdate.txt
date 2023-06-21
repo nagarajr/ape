@@ -1,1 +1,1 @@
-Add bgr hyperparameter (#9139)
+Fix undefined ‘im_array’ bug in predict.md (#8565)
