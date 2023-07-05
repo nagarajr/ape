@@ -1,1 +1,1 @@
-ADD | opnecv c++ Onnx integration (#70)
+fix yolo classify model loading error (#9196)
