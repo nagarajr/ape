@@ -1,1 +1,1 @@
-fix yolo classify model loading error (#9196)
+ultralytics 8.1.15 add Python 3.12 compatibility (#8210)
