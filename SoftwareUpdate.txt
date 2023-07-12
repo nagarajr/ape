@@ -1,1 +1,1 @@
-Update Roboflow segmentation Docs pages (#8094)
+Update Docs Home and Neural Magic pages (#7243)
