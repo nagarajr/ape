@@ -1,1 +1,1 @@
-ultralytics 8.1.28 avoid * ops on bool Tensors for RT-DETR OpenVINO export (#8937)
+Bump codecov/codecov-action from 3 to 4 in /.github/workflows (#8022)
