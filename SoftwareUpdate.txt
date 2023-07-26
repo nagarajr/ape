@@ -1,1 +1,1 @@
-Expand Model method type hinting (#8279)
+Add millimeters in solutions/distance_caculation.py + object-cropping.md visuals (#7860)
