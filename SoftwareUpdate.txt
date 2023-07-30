@@ -1,1 +1,1 @@
-fix print val map
+Add docs guide terminal images (#8819)
