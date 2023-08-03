@@ -1,1 +1,1 @@
-Update TFLite Docs images (#8605)
+Add TFLite Edge TPU Docs Integrations Page  (#8900)
