@@ -1,1 +1,1 @@
-Add OpenVINO Latency vs Throughput modes Docs page (#9001)
+Add YOLOv8 LibTorch C++ inference example (#7090)
