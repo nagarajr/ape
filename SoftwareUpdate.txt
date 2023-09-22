@@ -1,1 +1,1 @@
-Add yolo_bbox2segment docs reference (#7751)
+Add OpenVINO Latency vs Throughput modes Docs page (#9001)
