@@ -1,1 +1,1 @@
-Desktop Mode Switch - A switch inside the tab switcher that can be used to toggle desktop mode on / off globally
+Add polygon regions drawing support in object-counting.md and minor docs update (#8885)
