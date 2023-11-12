@@ -1,1 +1,1 @@
-ultralytics 8.1.1 Docs, Solutions and Export updates (#7545)
+ultralytics 8.0.236 dataset semantic & SQL search API (#7136)
