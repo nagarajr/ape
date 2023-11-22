@@ -1,1 +1,1 @@
-ultralytics 8.0.238 Explorer Ask AI feature and fixes (#7408)
+YOLOv8.1 blog, Explorer notebook and 2023 > 2024 updates (#7469)
