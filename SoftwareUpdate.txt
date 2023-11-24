@@ -1,1 +1,1 @@
-Explorer with LanceDB, Actions and Docs updates (#7487)
+Add polygon regions drawing support in object-counting.md and minor docs update (#8885)
