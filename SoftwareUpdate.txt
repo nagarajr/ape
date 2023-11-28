@@ -1,1 +1,1 @@
-Add distance calculation feature in vision-eye (#8616)
+Add Non-Maximum Suppression (NMS) inplace flag (#8368)
