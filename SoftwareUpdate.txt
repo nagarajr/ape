@@ -1,1 +1,1 @@
-Add https://youtu.be/ZzUSXQkLbNw to Integration Docs (#8793)
+Limit ray<2.9.3 due to bug in ray==2.10.0 (#9254)
