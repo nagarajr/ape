@@ -1,1 +1,1 @@
-Update OpenVINO INT8 export (#7515)
+ultralytics 8.1.26 LoadImagesAndVideos batched inference (#8817)
