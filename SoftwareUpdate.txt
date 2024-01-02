@@ -1,1 +1,1 @@
-fix for predicting with batch_size > 1 (#47)
+Update OpenVINO INT8 export (#7515)
