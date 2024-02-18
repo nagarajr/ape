@@ -1,1 +1,1 @@
-Modify tuner best.pt logic to train first (#8792)
+ultralytics 8.0.228 add training time argument (#7054)
