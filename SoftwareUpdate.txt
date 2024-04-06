@@ -1,1 +1,1 @@
-Update mkdocs.yml (#7693)
+Fix Yolo 8.0.206 scale bug (#7821)
