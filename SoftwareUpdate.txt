@@ -1,1 +1,1 @@
-Mkdocs updates (#8008)
+Add horizontal Mosaic3 augmentation (#6898)
