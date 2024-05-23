@@ -1,1 +1,1 @@
-Fix PIL show() and save() (#8202)
+Update TFLite Docs images (#8605)
