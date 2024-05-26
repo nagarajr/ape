@@ -1,1 +1,1 @@
-ultralytics 8.1.5 add OBB Tracking support (#7731)
+YOLOv8 INT8 TFLite Inference Example (#7317)
