@@ -1,1 +1,1 @@
-Add missing Explorer docs reference pages (#7455)
+Add bgr hyperparameter (#9139)
