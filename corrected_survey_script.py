@@ -30,7 +30,7 @@ else:
         # 4. Xác định cột đáp án (giả sử từ cột thứ 3 trở đi là đáp án 1–5)
         response_cols = df.columns[2:]
         n = 64  # Tổng số học sinh (cố định 64)
-        num_questions = 51  # Số câu hỏi (cố định 51)
+        num_questions = 53  # Số câu hỏi (cố định 53)
 
         print(f"Số học sinh: {n}")
         print(f"Số câu hỏi: {len(response_cols)}")
@@ -42,19 +42,27 @@ else:
         # Tạo danh sách để theo dõi các tỷ lệ đã sử dụng để tránh lặp lại
         used_percentages = []
         
+        # Tạo trước danh sách phân phối cho 53 câu hỏi
+        # 1-2 câu hỏi có tỷ lệ 75-80%
+        # 15-20% câu hỏi (8-11 câu) có tỷ lệ 80-90%
+        # Phần còn lại có tỷ lệ 90-<100%
+        
+        target_satisfactions = []
+        
+        # 2 câu hỏi có tỷ lệ 75-80%
+        target_satisfactions.extend([rng.uniform(75, 80) for _ in range(2)])
+        
+        # 9 câu hỏi có tỷ lệ 80-90% (khoảng 17%)
+        target_satisfactions.extend([rng.uniform(80, 90) for _ in range(9)])
+        
+        # 42 câu hỏi còn lại có tỷ lệ 90-<100%
+        target_satisfactions.extend([rng.uniform(90, 99.9) for _ in range(42)])
+        
+        # Shuffle để phân phối ngẫu nhiên
+        rng.shuffle(target_satisfactions)
+        
         for i, col in enumerate(response_cols):
-            # Tạo một phân phối ngẫu nhiên cho các mức độ hài lòng 1-5
-            # Điều chỉnh phân phối theo yêu cầu:
-            # - 1-2 câu hỏi có tỷ lệ 75-80%
-            # - 15-20% câu hỏi có tỷ lệ 80-90%
-            # - Phần còn lại có tỷ lệ 90-<100% (không bao giờ đạt 100%)
-            
-            if i < 2 and rng.random() < 0.5:  # 1-2 câu hỏi đầu có thể có tỷ lệ 75-80%
-                target_satisfaction = rng.uniform(75, 80)
-            elif rng.random() < 0.18:  # 15-20% câu hỏi có tỷ lệ 80-90%
-                target_satisfaction = rng.uniform(80, 90)
-            else:  # Phần còn lại có tỷ lệ 90-<100%
-                target_satisfaction = rng.uniform(90, 99.9)
+            target_satisfaction = target_satisfactions[i]
             
             # Tạo phân phối để đạt được target_satisfaction
             # Mức độ hài lòng = mức 3 + mức 4 + mức 5
@@ -92,12 +100,13 @@ else:
             used_percentages.append(round(actual_satisfaction, 2))
 
         # 6. Kiểm tra và điều chỉnh để tránh tỷ lệ giống nhau liên tiếp
+        # Chỉ điều chỉnh nhẹ để không phá vỡ phân phối đã tạo
         for i in range(1, len(used_percentages)):
             # Kiểm tra 3 câu liên tiếp
             if i >= 2:
                 if (used_percentages[i] == used_percentages[i-1] == used_percentages[i-2]):
-                    # Điều chỉnh câu hiện tại
-                    new_target = rng.uniform(85, 95)
+                    # Điều chỉnh nhẹ câu hiện tại (giữ trong khoảng 90-99%)
+                    new_target = rng.uniform(90, 99)
                     satisfaction_count = int(n * new_target / 100)
                     remaining = satisfaction_count
                     level3 = rng.integers(0, min(remaining, n//3) + 1)
@@ -122,8 +131,8 @@ else:
             
             # Kiểm tra 2 câu liên tiếp
             elif used_percentages[i] == used_percentages[i-1]:
-                # Điều chỉnh câu hiện tại
-                new_target = rng.uniform(85, 95)
+                # Điều chỉnh nhẹ câu hiện tại (giữ trong khoảng 90-99%)
+                new_target = rng.uniform(90, 99)
                 satisfaction_count = int(n * new_target / 100)
                 remaining = satisfaction_count
                 level3 = rng.integers(0, min(remaining, n//3) + 1)
@@ -147,12 +156,13 @@ else:
                 used_percentages[i] = round((counts[2] + counts[3] + counts[4]) / n * 100, 2)
 
         # 7. Kiểm tra tỷ lệ bị lặp quá nhiều, điều chỉnh nếu cần
+        # Chỉ điều chỉnh nhẹ để không phá vỡ phân phối đã tạo
         c = Counter(used_percentages)
         for val, freq in c.items():
             if freq > 3:
                 idxs = [i for i, x in enumerate(used_percentages) if x == val]
                 for j in idxs[3:]:
-                    new_target = rng.uniform(85, 95)
+                    new_target = rng.uniform(90, 99)  # Chỉ điều chỉnh trong khoảng 90-99%
                     satisfaction_count = int(n * new_target / 100)
                     remaining = satisfaction_count
                     level3 = rng.integers(0, min(remaining, n//3) + 1)
