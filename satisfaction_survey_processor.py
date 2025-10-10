@@ -45,7 +45,7 @@ class SatisfactionSurveyProcessor:
             
             # Tạo dữ liệu theo phân bố đã định
             responses = self._generate_responses_for_question(
-                num_students, satisfaction_distribution
+                num_students, satisfaction_distribution, q
             )
             
             df[f'Câu hỏi {q}'] = responses
@@ -62,11 +62,11 @@ class SatisfactionSurveyProcessor:
         """
         # Xác định loại phân bố dựa trên số thứ tự câu hỏi
         if question_num == 1:  # 1 câu hỏi có mức độ 75-80%
-            target_satisfaction = random.uniform(75, 78)
+            target_satisfaction = 77.5  # Cố định ở mức 77.5%
         elif question_num <= 8:  # 7 câu hỏi tiếp theo có mức độ 80-90% (khoảng 13%)
             target_satisfaction = random.uniform(80, 90)
-        else:  # Các câu hỏi còn lại có mức độ 90-99% (không 100%)
-            target_satisfaction = random.uniform(90, 99)
+        else:  # Các câu hỏi còn lại có mức độ 90-97% (không 100%)
+            target_satisfaction = random.uniform(90, 97)
         
         # Tạo phân bố ngẫu nhiên nhưng có kiểm soát
         # Đảm bảo target_satisfaction = level3 + level4 + level5
@@ -81,9 +81,9 @@ class SatisfactionSurveyProcessor:
         # Phân bố level 3, 4, 5 để đạt target
         if target_satisfaction <= 80:
             # Mức thấp: ít level 5, nhiều level 3
-            level3 = random.uniform(30, 45)
-            level4 = random.uniform(20, 35)
-            level5 = random.uniform(10, 25)
+            level3 = random.uniform(35, 50)
+            level4 = random.uniform(20, 30)
+            level5 = random.uniform(5, 20)
         elif target_satisfaction <= 90:
             # Mức trung bình: cân bằng
             level3 = random.uniform(15, 30)
@@ -123,6 +123,14 @@ class SatisfactionSurveyProcessor:
         level4 = max(0, level4)
         level5 = max(0, level5)
         
+        # Đảm bảo không đạt 100% - giới hạn tối đa 98.5%
+        final_high = level3 + level4 + level5
+        if final_high >= 98.5:
+            # Giảm level 5 và tăng level 1 để đảm bảo < 98.5%
+            reduction = final_high - 98.0
+            level5 = max(0, level5 - reduction)
+            level1 = level1 + reduction
+        
         return {
             1: level1,
             2: level2,
@@ -131,7 +139,7 @@ class SatisfactionSurveyProcessor:
             5: level5
         }
     
-    def _generate_responses_for_question(self, num_students: int, distribution: dict) -> List[int]:
+    def _generate_responses_for_question(self, num_students: int, distribution: dict, question_num: int = 1) -> List[int]:
         """
         Tạo câu trả lời cho một câu hỏi dựa trên phân bố đã định
         """
@@ -160,6 +168,33 @@ class SatisfactionSurveyProcessor:
         
         # Xáo trộn ngẫu nhiên
         random.shuffle(responses)
+        
+        # Kiểm tra và đảm bảo không có câu hỏi nào đạt 100%
+        high_satisfaction_count = sum(1 for r in responses if r >= 3)
+        high_satisfaction_percentage = (high_satisfaction_count / num_students) * 100
+        
+        if high_satisfaction_percentage >= 99.0:
+            # Thay thế một số câu trả lời mức 5 bằng mức 1 để giảm tỷ lệ
+            level5_indices = [i for i, r in enumerate(responses) if r == 5]
+            if len(level5_indices) > 0:
+                # Thay thế một số mức 5 bằng mức 1
+                num_to_replace = min(2, len(level5_indices))
+                for i in range(num_to_replace):
+                    responses[level5_indices[i]] = 1
+        
+        # Đặc biệt xử lý câu hỏi 1 để đảm bảo mức độ hài lòng thấp
+        if question_num == 1:
+            # Đảm bảo câu hỏi 1 có mức độ hài lòng 75-80%
+            high_satisfaction_count = sum(1 for r in responses if r >= 3)
+            high_satisfaction_percentage = (high_satisfaction_count / num_students) * 100
+            
+            if high_satisfaction_percentage > 80:
+                # Thay thế một số câu trả lời mức 4, 5 bằng mức 1, 2
+                level4_5_indices = [i for i, r in enumerate(responses) if r >= 4]
+                if len(level4_5_indices) > 0:
+                    num_to_replace = min(8, len(level4_5_indices))  # Thay thế 8 câu
+                    for i in range(num_to_replace):
+                        responses[level4_5_indices[i]] = random.choice([1, 2])
         
         return responses
     
