@@ -14,8 +14,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class SatisfactionSurveyProcessor:
-    def __init__(self):
-        self.num_questions = 53
+    def __init__(self, num_questions: int = 53):
+        self.num_questions = num_questions
         self.satisfaction_levels = [1, 2, 3, 4, 5]
         
     def generate_controlled_random_data(self, num_students: int) -> pd.DataFrame:
@@ -60,10 +60,19 @@ class SatisfactionSurveyProcessor:
         - Phần còn lại 90-100%
         - 1-2 câu hỏi có mức độ 75-80%
         """
+        # Tính toán số lượng câu hỏi cho từng mức dựa trên tổng số câu hỏi
+        total_questions = self.num_questions
+        
+        # 1-2 câu hỏi có mức độ 75-80% (khoảng 2-4% tổng số câu hỏi)
+        low_satisfaction_count = max(1, min(2, int(total_questions * 0.04)))
+        
+        # 15-20% câu hỏi có mức độ 80-90%
+        medium_satisfaction_count = max(1, int(total_questions * 0.18))
+        
         # Xác định loại phân bố dựa trên số thứ tự câu hỏi
-        if question_num == 1:  # 1 câu hỏi có mức độ 75-80%
-            target_satisfaction = 77.5  # Cố định ở mức 77.5%
-        elif question_num <= 8:  # 7 câu hỏi tiếp theo có mức độ 80-90% (khoảng 13%)
+        if question_num <= low_satisfaction_count:  # 1-2 câu hỏi có mức độ 75-80%
+            target_satisfaction = random.uniform(75, 80)
+        elif question_num <= low_satisfaction_count + medium_satisfaction_count:  # 15-20% câu hỏi có mức độ 80-90%
             target_satisfaction = random.uniform(80, 90)
         else:  # Các câu hỏi còn lại có mức độ 90-97% (không 100%)
             target_satisfaction = random.uniform(90, 97)
@@ -235,11 +244,17 @@ class SatisfactionSurveyProcessor:
         
         return pd.DataFrame(results)
     
-    def process_survey_data(self, input_file: str = None, num_students: int = 64) -> str:
+    def process_survey_data(self, num_students: int, num_questions: int = None) -> str:
         """
         Xử lý dữ liệu khảo sát và tạo file kết quả
         """
+        # Cập nhật số câu hỏi nếu được cung cấp
+        if num_questions is not None:
+            self.num_questions = num_questions
+            
         print("=== XỬ LÝ DỮ LIỆU KHẢO SÁT HÀI LÒNG ===")
+        print(f"Số học sinh: {num_students}")
+        print(f"Số câu hỏi: {self.num_questions}")
         
         # Tạo dữ liệu ngẫu nhiên có kiểm soát
         survey_data = self.generate_controlled_random_data(num_students)
@@ -248,7 +263,7 @@ class SatisfactionSurveyProcessor:
         satisfaction_results = self.calculate_satisfaction_percentages(survey_data)
         
         # Tạo file kết quả
-        output_file = 'ket_qua_khao_sat_hai_long.xlsx'
+        output_file = f'ket_qua_khao_sat_hai_long_{num_students}hs_{self.num_questions}cau.xlsx'
         
         with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
             # Ghi dữ liệu khảo sát gốc
@@ -259,8 +274,6 @@ class SatisfactionSurveyProcessor:
         
         print(f"\n=== HOÀN THÀNH ===")
         print(f"File kết quả đã được tạo: {output_file}")
-        print(f"Số học sinh: {num_students}")
-        print(f"Số câu hỏi: {self.num_questions}")
         
         # Hiển thị thống kê kết quả
         self._display_results_summary(satisfaction_results)
@@ -285,32 +298,60 @@ class SatisfactionSurveyProcessor:
         range_100 = (high_satisfaction == 100).sum()
         
         print(f"\nPhân bố mức độ hài lòng:")
-        print(f"- 75-80%: {range_75_80} câu hỏi ({range_75_80/53*100:.1f}%)")
-        print(f"- 80-90%: {range_80_90} câu hỏi ({range_80_90/53*100:.1f}%)")
-        print(f"- 90-100%: {range_90_100} câu hỏi ({range_90_100/53*100:.1f}%)")
-        print(f"- 100%: {range_100} câu hỏi ({range_100/53*100:.1f}%)")
+        total_questions = len(high_satisfaction)
+        print(f"- 75-80%: {range_75_80} câu hỏi ({range_75_80/total_questions*100:.1f}%)")
+        print(f"- 80-90%: {range_80_90} câu hỏi ({range_80_90/total_questions*100:.1f}%)")
+        print(f"- 90-100%: {range_90_100} câu hỏi ({range_90_100/total_questions*100:.1f}%)")
+        print(f"- 100%: {range_100} câu hỏi ({range_100/total_questions*100:.1f}%)")
         
-        print(f"\nDanh sách mức độ hài lòng của 53 câu hỏi:")
+        print(f"\nDanh sách mức độ hài lòng của {len(high_satisfaction)} câu hỏi:")
         for i, value in enumerate(high_satisfaction, 1):
             print(f"Câu {i:2d}: {value:6.2f}%", end="  ")
             if i % 5 == 0:  # Xuống dòng mỗi 5 câu
                 print()
 
+def get_user_input():
+    """
+    Lấy thông tin từ người dùng
+    """
+    print("Script xử lý dữ liệu khảo sát hài lòng")
+    print("=" * 50)
+    
+    while True:
+        try:
+            num_students = int(input("Nhập số lượng học sinh khảo sát: "))
+            if num_students <= 0:
+                print("Số lượng học sinh phải lớn hơn 0!")
+                continue
+            break
+        except ValueError:
+            print("Vui lòng nhập một số nguyên hợp lệ!")
+    
+    while True:
+        try:
+            num_questions = int(input("Nhập số lượng câu hỏi khảo sát: "))
+            if num_questions <= 0:
+                print("Số lượng câu hỏi phải lớn hơn 0!")
+                continue
+            break
+        except ValueError:
+            print("Vui lòng nhập một số nguyên hợp lệ!")
+    
+    return num_students, num_questions
+
 def main():
     """
     Hàm chính để chạy script
     """
-    processor = SatisfactionSurveyProcessor()
-    
-    # Số học sinh mặc định (có thể thay đổi)
-    num_students = 64
-    
-    print("Script xử lý dữ liệu khảo sát hài lòng")
-    print("=" * 50)
-    
     try:
+        # Lấy thông tin từ người dùng
+        num_students, num_questions = get_user_input()
+        
+        # Tạo processor với số câu hỏi được chỉ định
+        processor = SatisfactionSurveyProcessor(num_questions)
+        
         # Xử lý dữ liệu
-        output_file = processor.process_survey_data(num_students=num_students)
+        output_file = processor.process_survey_data(num_students, num_questions)
         
         print(f"\n✅ Hoàn thành! File kết quả: {output_file}")
         print("\nHướng dẫn sử dụng:")
@@ -318,6 +359,9 @@ def main():
         print("2. Sheet 'Dữ liệu khảo sát': Dữ liệu gốc với câu trả lời ngẫu nhiên")
         print("3. Sheet 'Kết quả phân tích': Phần trăm mức độ hài lòng cho từng câu hỏi")
         
+    except KeyboardInterrupt:
+        print("\n\n❌ Script đã bị hủy bởi người dùng.")
+        return 1
     except Exception as e:
         print(f"❌ Lỗi: {str(e)}")
         return 1
